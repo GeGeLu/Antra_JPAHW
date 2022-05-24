@@ -1,25 +1,30 @@
 package entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Department {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID")
-    private Integer id;
+    @Column(name = "Did")
+    private int did;
     @Basic
     @Column(name = "Name")
     private String name;
 
-    public Integer getId() {
-        return id;
+    @OneToMany(targetEntity = Employee.class)
+    private List<EmpDep> empdep = new ArrayList<>();
+
+    public int getDid() {
+        return did;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setDid(int did) {
+        this.did = did;
     }
 
     public String getName() {
@@ -30,6 +35,8 @@ public class Department {
         this.name = name;
     }
 
+    public void addEmpDep(EmpDep ed) { this.empdep.add(ed);}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -37,7 +44,7 @@ public class Department {
 
         Department that = (Department) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (did != that.did) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;
@@ -45,7 +52,7 @@ public class Department {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = did;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }

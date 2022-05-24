@@ -3,24 +3,26 @@ package entity;
 import javax.persistence.*;
 
 @Entity
-//@NamedQuery(name = "Employee.byDepartment", query = "SELECT e FROM Employee e.depart")
 public class Employee {
+
     @Id
-    @Column(name = "ID")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int eid;
+
     @Basic
     @Column(name = "Name")
     private String name;
-    @Basic
-    @Column(name = "department_id")
-    private Integer departmentId;
 
-    public Integer getId() {
-        return id;
+    @ManyToOne (cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    public int getEid() {
+        return eid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setEid(int eid) {
+        this.eid = eid;
     }
 
     public String getName() {
@@ -31,14 +33,6 @@ public class Employee {
         this.name = name;
     }
 
-    public Integer getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,31 +40,20 @@ public class Employee {
 
         Employee employee = (Employee) o;
 
-        if (id != null ? !id.equals(employee.id) : employee.id != null) return false;
+        if (eid != employee.eid) return false;
         if (name != null ? !name.equals(employee.name) : employee.name != null) return false;
-        if (departmentId != null ? !departmentId.equals(employee.departmentId) : employee.departmentId != null)
-            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = eid;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (departmentId != null ? departmentId.hashCode() : 0);
         return result;
     }
 
 
-//    @ManyToOne
-//    private Department manyToOne;
-//
-//    public Department getManyToOne() {
-//        return manyToOne;
-//    }
-//
-//    public void setManyToOne(Department manyToOne) {
-//        this.manyToOne = manyToOne;
-//    }
+
+
 }
